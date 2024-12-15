@@ -7,9 +7,8 @@ A simple Flask-based web application for a chatbot that answers user queries and
 - [Description](#description)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Folder Structure](#folder-structure)
 - [Technologies Used](#technologies-used)
-- [License](#license)
+
 
 ## Description
 
@@ -38,3 +37,35 @@ To set up and run the project on your local machine, follow these steps:
    ```bash
    git clone https://github.com/Vasanth2005kk/StaticChatbot.git
    cd StaticChatbot
+
+    
+2. **Create a virtual environment**:
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+
+3. **Install dependencies**
+    ```bash
+    pip install -r requirements.txt
+
+4. **Run the application:**
+    ```bash
+    python3 app.py
+
+5. **Open your browser and navigate to http://localhost:5000.**
+
+
+## Usage
+
+1. After navigating to the home page, you'll see a list of questions.
+2. Click on any question to see the bot's answer.
+3. If the question has subquestions, clicking on them will show their answers.
+4. If there is an image associated with the answer, it will be displayed alongside the text.
+
+## Technologies
+
+- Flask - A Python web framework for building web applications.
+- Flask-CORS - For enabling cross-origin requests.
+- HTML/CSS - For building the frontend UI.
+- JavaScript - For handling interactivity and dynamic content updates.
+- JSON - For storing questions, answers, and subquestions.

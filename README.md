@@ -38,7 +38,6 @@ To set up and run the project on your local machine, follow these steps:
    git clone https://github.com/Vasanth2005kk/StaticChatbot.git
    cd StaticChatbot
 
-    
 2. **Create a virtual environment**:
     ```bash
     python3 -m venv venv

@@ -61,7 +61,7 @@ To set up and run the project on your local machine, follow these steps:
 3. If the question has subquestions, clicking on them will show their answers.
 4. If there is an image associated with the answer, it will be displayed alongside the text.
 
-## Technologies
+## Technologies Used
 
 - Flask - A Python web framework for building web applications.
 - Flask-CORS - For enabling cross-origin requests.

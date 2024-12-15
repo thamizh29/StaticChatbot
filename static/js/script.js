@@ -83,7 +83,10 @@ function handleQuestionClick(question, parentData) {
 function handleSubquestionClick(parentQuestion, subquestion) {
     addMessage(subquestion.question, 'user');
     setTimeout(() => {
-        addMessage(subquestion.answer, 'bot', subquestion.image);
+        // Ensure the image is correctly handled
+        const imageUrl = subquestion.image ? subquestion.image : "";
+
+        addMessage(subquestion.answer, 'bot', imageUrl);
 
         // Automatically go back to the parent question list after displaying the answer
         const parentData = questionStack.pop(); // Get the parent questions from the stack
@@ -92,6 +95,7 @@ function handleSubquestionClick(parentQuestion, subquestion) {
         }
     }, 500);
 }
+
 
 function addMessage(text, type, image = "") {
     const chatOutput = document.getElementById('chatOutput');

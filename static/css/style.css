@@ -337,16 +337,41 @@ body {
 
 /* Responsive Styles */
 @media screen and (max-width: 480px) {
-    .chatoutput-container {
-        width: 100%;
-        height: 50vh;
-        position: relative;
-        top: 0;
-        left: 0;
-        box-shadow: none;
-        padding: 10px;
-    }
+   .chatoutput-container {
+    width: 100%;
+    height: 45vh;
+    position: relative;
+    top: 0;
+    left: 0;
+    box-shadow: none;
+    padding: 10px;
+    display: flex;
+    flex-direction: column; /* Ensure messages stack vertically */
+    justify-content: flex-start; /* Align items at the top by default */
+    align-items: flex-start; /* Align items to the left (default) */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+#chatOutput {
+    height: 300px; /* Example height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    list-style-type: none;
+    margin: 0;
+}
 
+/* To ensure the messages are centered horizontally and stacked properly */
+.chatoutput-container ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style-type: none; /* Remove default list styles */
+}
+
+.chatoutput-container li {
+    width: 100%;
+    margin-bottom: 10px; /* Space between messages */
+}
+
+    
     .chat-questions {
         width: 100%;
         height: 40vh;
@@ -356,18 +381,30 @@ body {
         box-shadow: none;
         overflow-y: auto;
         padding: 10px;
+        display: flex;
+        justify-content: flex-start; /* Align items from the top */
+        align-items: flex-start; /* Align items from the top */
     }
-
+    
     .chat-questions ul {
-        margin: 10px;
+        margin: 0; /* Remove the margin to avoid shifting */
+        padding: 0; /* Remove any padding */
+        display: flex;
+        flex-direction: column; /* Arrange list items vertically */
+        align-items: center; /* Center the list items horizontally */
+        width: 100%;
     }
-
+    
     .chat-questions ul li {
         padding: 5px 20px;
+       
+        width: 100%; /* Ensure the list items take full width */
+        box-sizing: border-box; /* Include padding in the element's total width */
     }
+    
 
     .message {
-        margin-left: 0px;
+        margin-right: 10px;
         width: 85%;
     }
 
@@ -387,10 +424,10 @@ body {
 
 @media screen and (max-width:1020px) {
     .message {
-        left: -20px;
+        margin-right:80px;
     }
 
     .message.bot {
-        margin-left: -20px;
+        margin-left: -40px;
     }
 }

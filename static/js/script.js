@@ -15,7 +15,7 @@ let questionStack = []; // Stack to track question navigation
 // Load data from Data.json
 async function loadData() {
     try {
-        const response = await fetch('http://localhost:5000/Datajson'); // Update the path if necessary
+        const response = await fetch('http://192.168.1.13:8000/Datajson'); // Update the path if necessary
         const data = await response.json();
 
         // Populate the responses object including subquestions
@@ -44,6 +44,8 @@ function renderQuestions(data) {
         li.onclick = () => handleQuestionClick(item.question, data);
         questionsContainer.appendChild(li);
     });
+    // Scroll to the top of the container
+    questionsContainer.scrollTop = 0;
 }
 
 function renderSubquestions(parentQuestion, subquestions) {
@@ -56,6 +58,8 @@ function renderSubquestions(parentQuestion, subquestions) {
         li.onclick = () => handleSubquestionClick(parentQuestion, item);
         questionsContainer.appendChild(li);
     });
+    // Scroll to the top of the container
+    questionsContainer.scrollTop = 0;
 }
 
 function handleQuestionClick(question, parentData) {
@@ -103,6 +107,8 @@ function addMessage(text, type, image = "") {
     // Create a new message container
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', type); // Assign type-specific class (e.g., 'user' or 'bot')
+    
+    
 
     // Format the text content (replace newlines with <br> for rendering)
     const formattedText = text.replace(/\r?\n/g, '<br>');
@@ -135,7 +141,7 @@ function addMessage(text, type, image = "") {
     chatOutput.appendChild(li);
 
     // Scroll to the bottom of the chat to show the latest message
-    chatOutput.scrollTop = chatOutput.scrollHeight;
+    chatOutput.scrollTop = chatOutput.scrollHeight; // Scrolls to the bottom immediately after appending
 }
 
 // Initialize data loading

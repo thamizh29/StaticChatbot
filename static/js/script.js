@@ -34,6 +34,31 @@ async function loadData() {
     }
 }
 
+function toggleQuestions() {
+    const chatButton = document.getElementById("chatButton");
+    const chatQuestions = document.getElementById("chatQuestions");
+    const chatOutputContainer = document.querySelector(".chatoutput-container"); 
+
+    // Check if the chatQuestions is currently visible
+    if (chatQuestions.style.display === "none" || chatQuestions.style.display === "") {
+        // Show the questions and hide the chat button
+        chatQuestions.style.display = "block";
+    } else {
+        // Hide the questions and show the chat button
+
+        chatQuestions.style.display = "none";
+        chatButton.style.display = "block";
+    }
+    if (window.innerWidth <= 360) {
+        // Set the height of the chat output container to 90vh for small screens
+        chatOutputContainer.style.height = "50vh"; // Adjust height for small screens
+    } else {
+        // Reset the height for larger screens (optional)
+        chatOutputContainer.style.height = ""; // Remove any set height for larger screens
+    }
+}
+
+
 function renderQuestions(data) {
     const questionsContainer = document.querySelector('.chat-questions ul');
     questionsContainer.innerHTML = ''; // Clear existing questions

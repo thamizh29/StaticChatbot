@@ -23,8 +23,8 @@
             
         </button>
     </div>
-    <!-- <button class="chat-button" id="chatButton" onclick="toggleQuestions()"><img id="chat-icon" src="{{url_for('static',filename='images/chat-icon.png')}}" alt="log"/>கேள்வி</button> -->
-    <div class="chat-questions" id="chatQuestions" >
+    <button class="chat-button" id="chatButton" onclick="toggleQuestions()"><img id="chat-icon" src="{{url_for('static',filename='images/chat-icon.png')}}" alt="log"/>கேள்வி</button>
+    <div class="chat-questions" id="chatQuestions" style="display: none;" >
         {% if all_questions %}
         <ul>
             {% for question in all_questions %}

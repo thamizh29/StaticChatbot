@@ -18,12 +18,13 @@
 <body>
     <div class="nav-bor">
         <img src="{{url_for('static',filename='images/Untitled-removebg-preview.png')}}" alt="log">
-        <h1><span class="number">24</span>வது தமிழ்நாடு மாநில மாநாடு <br><span>( மாநாடு குறித்த விவரங்கள் )</span></h1>
+        <h1><span class="number">24</span>வது தமிழ் மாநில மாநாடு <br><span>( மாநாடு குறித்த விவரங்கள் )</span></h1>
         <button class="menu" aria-label="Main Menu" id="menuBTN">
             
         </button>
     </div>
-    <div class="chat-questions">
+    <!-- <button class="chat-button" id="chatButton" onclick="toggleQuestions()"><img id="chat-icon" src="{{url_for('static',filename='images/chat-icon.png')}}" alt="log"/>கேள்வி</button> -->
+    <div class="chat-questions" id="chatQuestions" >
         {% if all_questions %}
         <ul>
             {% for question in all_questions %}

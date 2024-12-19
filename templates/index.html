@@ -34,8 +34,7 @@
         {% if all_questions %}
         <ul>
             {% for question in all_questions %}
-            <li onclick="handleQuestionClick('{{question['question']}}')">{{ loop.index }}. {{question['question']}}
-            </li>
+            <li onclick="handleQuestionClick('{{question['question']}}')">{{ loop.index }}. {{question['question']}}</li>
             {% endfor %}
         </ul>
         {% endif %}

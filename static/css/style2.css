@@ -240,23 +240,32 @@ body {
 }
 
 .chat-button {
-    background-color: #ff0000;
-    border-radius: 5px;
-    color: white;
-    padding: 15px;
-    padding-left: 50px;
-    border: none;
-    position: fixed;
-    bottom: 50px;
-    right: 10px;
-    z-index: 9999;
+    display: flex; /* Arrange icon and text in a row */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    position: fixed; /* Keeps the button in a fixed position */
+    bottom: 20px; /* Adjust the vertical position */
+    right: 20px; /* Adjust the horizontal position */
+    background-color: #007bff; /* Button color (blue) */
+    color: white; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 10px; /* Rounded button */
+    padding: 10px 20px; /* Add spacing inside the button */
+    font-size: 16px; /* Text size */
+    font-family: Arial, sans-serif; /* Font style */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    z-index: 1000; /* Ensure it appears above other elements */
 }
-#chat-icon{
-    position: fixed;
-    bottom: 65px;
-    right: 80px;
-    height: 30px;
-    width: 30px;
+
+.chat-button img#chat-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.chat-button-content {
+    font-size: 16px;
+    font-weight: bold;
 }
 
 /*@media screen and (min-width:320px)  {
@@ -430,5 +439,16 @@ body {
 .message.bot {
     margin-left: 20px;
     max-width: 85%;
+}
+.chat-button {
+    bottom: 5%; /* Adjust position for smaller screens */
+    right: 10px;
+    padding: 8px 16px; /* Adjust padding for smaller screens */
+    font-size: 14px; /* Smaller font size */
+}
+.chat-button img#chat-icon {
+    width: 16px; /* Reduce icon size */
+    height: 16px;
+    margin-right: 5px; /* Adjust spacing */
 }
 }

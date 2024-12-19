@@ -26,7 +26,10 @@
     <div class="main-img">
     <img src="{{url_for('static',filename='images/Untitled-removebg-preview.png')}}" alt="log" />
     </div>
-    <button class="chat-button" id="chatButton" onclick="toggleQuestions()"><img id="chat-icon" src="{{url_for('static',filename='images/chat-icon.png')}}" alt="log"/><span class="chat-button-content">கேள்வி</span></button>
+    <button class="chat-button" id="chatButton" onclick="toggleQuestions()">
+        <img id="chat-icon" src="{{url_for('static',filename='images/chat-icon.png')}}" alt="log"/>
+        <span class="chat-button-content">கேள்வி</span>
+    </button>
     <div class="chat-questions" id="chatQuestions" style="display: none;" >
         {% if all_questions %}
         <ul>

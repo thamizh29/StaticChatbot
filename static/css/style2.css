@@ -84,6 +84,18 @@ ul, li {
 body {
     overflow: hidden;
 }
+.main-img {
+    position: fixed; /* Ensures it's relative to the viewport */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust to perfectly center */
+    z-index: 100; /* Optional: ensure it's on top */
+}
+
+.main-img img {
+    max-width: 100%; /* Ensures responsiveness */
+    max-height: 100%; /* Ensures it doesn't overflow */
+}
 
 /* Chat Questions Panel */
 .chat-questions {
@@ -288,6 +300,7 @@ body {
     .nav-bor h1 .number {
         font-size: 20px;
     }
+    
 
     /* Chat Container Styling */
     .chatoutput-container {
@@ -301,7 +314,7 @@ body {
         align-items: center;
         padding: 10px;
         background-color: #ffffff;
-        height: 55vh; /* Adjust height as needed */
+        transition: height 0.3s ease-in-out;
     }
 
     #chatOutput {
@@ -354,6 +367,7 @@ body {
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
+        z-index: 200;
     }
 
     .chat-questions ul {

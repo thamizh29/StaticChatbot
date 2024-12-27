@@ -34,45 +34,65 @@ async function loadData() {
     }
 }
 
-function toggleQuestions() {
-    const chatButton = document.getElementById("chatButton");
-    const chatQuestions = document.getElementById("chatQuestions");
-    const chatOutputContainer = document.querySelector(".chatoutput-container");
-    const mainImage = document.querySelector(".main-img") ;
-    const chatImage = document.getElementById("chat-icon");
-    const chatContent = document.querySelector(".chat-button-content")
-    
+const chatButton = document.getElementById("chatButton");
+const chatQuestions = document.getElementById("chatQuestions");
+const chatOutputContainer = document.querySelector(".chatoutput-container");
+const chatOutput = document.getElementById("chatOutput");
+const mainImage = document.querySelector(".main-img");
+const chatImage = document.getElementById("chat-icon");
+const chatContent = document.querySelector(".chat-button-content");
 
+// Function to toggle chat questions visibility
+function toggleQuestions() {
     // Check if the chatQuestions is currently visible
     if (chatQuestions.style.display === "none" || chatQuestions.style.display === "") {
         // Show the questions and hide the chat button
         chatQuestions.style.display = "block";
-        chatButton.style.bottom = "40%";
+        chatButton.style.display = "none";
         mainImage.style.display = "none";
-        chatImage.src = "/static/images/close.png";
-        chatContent.textContent = "மூடு";
+
+        // Adjust chat output height for mobile view
+        if (window.innerWidth <= 480) {
+            chatOutputContainer.style.height = "45vh";
+        }
     } else {
         // Hide the questions and show the chat button
-
         chatQuestions.style.display = "none";
         chatButton.style.display = "block";
         chatButton.style.bottom = "";
-        chatImage.src = "/static/images/chat-icon.png";
-        chatContent.textContent = "கேள்வி";
-    }
-    if (window.innerWidth <= 480) {
-        if (chatQuestions.style.display === "block") {
-            // Chat questions visible: set chat output height to 50vh
-            chatOutputContainer.style.height = "45vh";
-        } else {
-            // Chat questions hidden: set chat output height to 90vh
+
+        // Adjust chat output height for mobile view
+        if (window.innerWidth <= 480) {
             chatOutputContainer.style.height = "90vh";
         }
-    } else {
-        // Reset height for larger screens
+    }
+
+    // Reset height for larger screens
+    if (window.innerWidth > 480) {
         chatOutputContainer.style.height = "";
     }
 }
+
+// Hide chatQuestions and expand chatOutputContainer when interacting with chatOutput
+// chatOutput.addEventListener("scroll", () => {
+//     chatQuestions.style.display = "none";
+//     chatButton.style.display = "block";
+
+//     // Expand chat output for mobile view
+//     if (window.innerWidth <= 480) {
+//         chatOutputContainer.style.height = "90vh";
+//     }
+// });
+
+chatOutput.addEventListener("touchstart", () => {
+    chatQuestions.style.display = "none";
+    chatButton.style.display = "block";
+
+    // Expand chat output for mobile view
+    if (window.innerWidth <= 480) {
+        chatOutputContainer.style.height = "90vh";
+    }
+});
 
 
 function renderQuestions(data) {

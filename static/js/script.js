@@ -15,7 +15,7 @@ let questionStack = []; // Stack to track question navigation
 // Load data from Data.json
 async function loadData() {
     try {
-        const response = await fetch('http://192.168.1.13:8000/Datajson'); // Update the path if necessary
+        const response = await fetch('http://0.0.0.0:8000/Datajson'); // Update the path if necessary
         const data = await response.json();
 
         // Populate the responses object including subquestions

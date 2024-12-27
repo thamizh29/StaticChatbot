@@ -22,4 +22,4 @@ EXPOSE 8000
 
 
 # Run the Flask application
-CMD ["flask", "run"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]

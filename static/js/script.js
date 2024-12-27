@@ -15,7 +15,7 @@ let questionStack = []; // Stack to track question navigation
 // Load data from Data.json
 async function loadData() {
     try {
-        const response = await fetch('http://0.0.0.0:8000/Datajson'); // Update the path if necessary
+        const response = await fetch('http://192.168.1.13:8000/Datajson'); // Update the path if necessary
         const data = await response.json();
 
         // Populate the responses object including subquestions
@@ -34,6 +34,67 @@ async function loadData() {
     }
 }
 
+const chatButton = document.getElementById("chatButton");
+const chatQuestions = document.getElementById("chatQuestions");
+const chatOutputContainer = document.querySelector(".chatoutput-container");
+const chatOutput = document.getElementById("chatOutput");
+const mainImage = document.querySelector(".main-img");
+const chatImage = document.getElementById("chat-icon");
+const chatContent = document.querySelector(".chat-button-content");
+
+// Function to toggle chat questions visibility
+function toggleQuestions() {
+    // Check if the chatQuestions is currently visible
+    if (chatQuestions.style.display === "none" || chatQuestions.style.display === "") {
+        // Show the questions and hide the chat button
+        chatQuestions.style.display = "block";
+        chatButton.style.display = "none";
+        mainImage.style.display = "none";
+
+        // Adjust chat output height for mobile view
+        if (window.innerWidth <= 480) {
+            chatOutputContainer.style.height = "45vh";
+        }
+    } else {
+        // Hide the questions and show the chat button
+        chatQuestions.style.display = "none";
+        chatButton.style.display = "block";
+        chatButton.style.bottom = "";
+
+        // Adjust chat output height for mobile view
+        if (window.innerWidth <= 480) {
+            chatOutputContainer.style.height = "90vh";
+        }
+    }
+
+    // Reset height for larger screens
+    if (window.innerWidth > 480) {
+        chatOutputContainer.style.height = "";
+    }
+}
+
+// Hide chatQuestions and expand chatOutputContainer when interacting with chatOutput
+// chatOutput.addEventListener("scroll", () => {
+//     chatQuestions.style.display = "none";
+//     chatButton.style.display = "block";
+
+//     // Expand chat output for mobile view
+//     if (window.innerWidth <= 480) {
+//         chatOutputContainer.style.height = "90vh";
+//     }
+// });
+
+chatOutput.addEventListener("touchstart", () => {
+    chatQuestions.style.display = "none";
+    chatButton.style.display = "block";
+
+    // Expand chat output for mobile view
+    if (window.innerWidth <= 480) {
+        chatOutputContainer.style.height = "90vh";
+    }
+});
+
+
 function renderQuestions(data) {
     const questionsContainer = document.querySelector('.chat-questions ul');
     questionsContainer.innerHTML = ''; // Clear existing questions
@@ -44,6 +105,8 @@ function renderQuestions(data) {
         li.onclick = () => handleQuestionClick(item.question, data);
         questionsContainer.appendChild(li);
     });
+    // Scroll to the top of the container
+    questionsContainer.scrollTop = 0;
 }
 
 function renderSubquestions(parentQuestion, subquestions) {
@@ -56,6 +119,8 @@ function renderSubquestions(parentQuestion, subquestions) {
         li.onclick = () => handleSubquestionClick(parentQuestion, item);
         questionsContainer.appendChild(li);
     });
+    // Scroll to the top of the container
+    questionsContainer.scrollTop = 0;
 }
 
 function handleQuestionClick(question, parentData) {
@@ -103,6 +168,8 @@ function addMessage(text, type, image = "") {
     // Create a new message container
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', type); // Assign type-specific class (e.g., 'user' or 'bot')
+    
+    
 
     // Format the text content (replace newlines with <br> for rendering)
     const formattedText = text.replace(/\r?\n/g, '<br>');
@@ -135,7 +202,7 @@ function addMessage(text, type, image = "") {
     chatOutput.appendChild(li);
 
     // Scroll to the bottom of the chat to show the latest message
-    chatOutput.scrollTop = chatOutput.scrollHeight;
+    chatOutput.scrollTop = chatOutput.scrollHeight; // Scrolls to the bottom immediately after appending
 }
 
 // Initialize data loading

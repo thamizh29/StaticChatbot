@@ -21,12 +21,18 @@ def datajson():
         # Prefix top-level question images
         if "image" in item and item["image"]:
             item["image"] = url_for('static', filename=item["image"].lstrip('./'))
-        
+
+
         # Handle subquestions
         if "subquestion" in item and isinstance(item["subquestion"], list):
             for sub in item["subquestion"]:
                 if "image" in sub and sub["image"]:
                     sub["image"] = url_for('static', filename=sub["image"].lstrip('./'))
+                if "subquestion" in sub and isinstance(sub["subquestion"], list):
+                    for sub2 in sub["subquestion"]:
+                        if "image" in sub2 and sub2["image"]:
+                            sub2["image"] = url_for('static', filename=sub2["image"].lstrip('./'))
+    print(data)
     return jsonify(data)
 
 

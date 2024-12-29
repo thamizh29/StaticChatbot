@@ -1,17 +1,20 @@
 let responses = {};
 let questionStack = []; // Stack to track question navigation
-
+let data = [];
 // Load data from Data.json
 async function loadData() {
     try {
-        const response = await fetch('http://0.0.0.0:8000/Datajson'); // Update the path if necessary
-        const data = await response.json();
+        const response = await fetch('https://chat.vglug.org/Datajson');
+        //const response = await fetch('http://127.0.0.1:8000/Datajson'); // Update the path if necessary
+        data = await response.json();
 
         // Populate the responses object including subquestions
         data.forEach(item => {
             responses[item.question] = {
                 answer: item.answer || "No answer available",
                 image: item.image || "",
+                location: item.location || "",
+                live_url: item.live_url || "",
                 subquestions: item.subquestion || [],
             };
         });
@@ -23,6 +26,7 @@ async function loadData() {
     }
 }
 
+console.log(responses)
 const chatButton = document.getElementById("chatButton");
 const chatQuestions = document.getElementById("chatQuestions");
 const chatOutputContainer = document.querySelector(".chatoutput-container");
@@ -99,26 +103,32 @@ function handleQuestionClick(question, parentData) {
     if (botResponse && botResponse.subquestions.length > 0) {
         // Save the current questions to the stack
         questionStack.push(parentData);
-
+        console.log("RENDERING SUB QUESTIONS")
+        console.log(botResponse.subquestions)
+        console.log("Sub Questions", question, botResponse.subquestions)
         // Render the subquestions dynamically
         renderSubquestions(question, botResponse.subquestions);
     } else if (botResponse) {
         // Add the bot's answer as a message after a delay
-        setTimeout(() => addMessage(botResponse.answer, 'bot', botResponse.image), 500);
+        console.log("ENters here with answer", botResponse.answer)
+        setTimeout(() => addMessage(botResponse.answer, 'bot', botResponse.image, botResponse.location, botResponse.live_url), 500);
+        renderQuestions(data)
     } else {
         // Handle the case where no answer is available
         setTimeout(() => addMessage("I'm sorry, I don't have an answer for that.", 'bot'), 500);
+        renderQuestions(data)
     }
 }
 
 function handleSubquestionClick(parentQuestion, subquestion) {
     addMessage(subquestion.question, 'user');  // Add subquestion to the chat
-
+    console.log("RENDERING 2 LEVEL SUB QUESTIONS", parentQuestion, subquestion)
     setTimeout(() => {
         const imageUrl = subquestion.image || "";  // Use the image URL if available
-
+        const location = subquestion.location || "";
+        const live_url = subquestion.live_url || "";
         // Add the subquestion's answer and image
-        addMessage(subquestion.answer || " ", 'bot', imageUrl);
+        addMessage(subquestion.answer || " ", 'bot', imageUrl, location, live_url);
 
         // If the subquestion has its own subquestions, recursively handle them
         if (subquestion.subquestion && subquestion.subquestion.length > 0) {
@@ -126,7 +136,8 @@ function handleSubquestionClick(parentQuestion, subquestion) {
             renderSubquestions(subquestion.question, subquestion.subquestion); // Render nested subquestions
         } else {
             // If no more subquestions, go back to the parent question
-            const parentData = questionStack.pop(); // Get the parent data
+            const parentData = data; // Get the parent data
+            console.log("PARENT DATA", parentData)
             if (parentData) {
                 renderQuestions(parentData);  // Re-render parent questions
             } else {
@@ -141,7 +152,7 @@ function handleSubquestionClick(parentQuestion, subquestion) {
 function renderSubquestions(parentQuestion, subquestions) {
     const questionsContainer = document.querySelector('.chat-questions ul');
     questionsContainer.innerHTML = ''; // Clear existing questions
-
+    console.log("RENDERING --- SUB QUESTIONS", parentQuestion, subquestions)
     subquestions.forEach((item, index) => {
         const li = document.createElement('li');
         li.textContent = `${index + 1}. ${item.question}`;
@@ -154,7 +165,8 @@ function renderSubquestions(parentQuestion, subquestions) {
 }
 
 // Modified function to handle messages with images correctly
-function addMessage(text, type, image = "") {
+function addMessage(text, type, image = "", location = "", live_url = "") {
+    console.log("Adding message", text, type, image, location)
     if (!text.trim() && type === 'bot') {
         return; // Don't add a message if no text is available
     }
@@ -186,7 +198,30 @@ function addMessage(text, type, image = "") {
 
         messageDiv.appendChild(img); // Add image to the message
     }
+    if (location) {
+        console.log("Adding location button", location)
+        const location_btn = document.createElement('a');
+        location_btn.href = location
+        location_btn.target = "_blank"
+        location_btn.textContent = "இடத்தைக் காட்டு"
+        location_btn.classList.add("btn")
+        messageDiv.appendChild(location_btn);
+    }
 
+    if (live_url) {
+        const live_div = document.createElement('div');
+        live_div.classList.add("video-container")
+        const live_box = document.createElement('iframe');
+        live_box.src = live_url
+        live_box.style.border = "none"
+        live_box.style.width = "100%"
+        live_box.style.height = "100%"
+        live_box.title = "Live Stream"
+        live_box.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        live_box.allowFullscreen = true
+        live_div.appendChild(live_box)
+        messageDiv.appendChild(live_div)
+    }
     // Add the message to the chat output
     if (text.trim()) {
         const li = document.createElement('li');

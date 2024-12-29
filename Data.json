@@ -1,5 +1,11 @@
 [
     {
+        "question": "பொதுகூட்டத்தின் நேரலையை காட்டு",
+        "answer": "பொதுக்கூட்டம் துவங்கும் நேரம்: 03/01/2025 மாலை 4 மணி",
+        "image": "",
+        "live_url": "https://www.youtube-nocookie.com/embed/2y1TPkS-aEA"
+    },
+    {
         "question": "மாநாடு நடைபெறும் நாட்கள்",
         "answer": "ஜனவரி 3 2024\nஜனவரி 4 2024\nஜனவரி 5 2024",
         "image": ""
@@ -18,7 +24,8 @@
                     {
                         "question": "சென்னை",
                         "answer": "தாஜ் கொரோமண்டல், சரவணா ஸ்டே",
-                        "image": "uploads/f84ddc13ac9a3ff2_jpg"
+                        "image": "uploads/f84ddc13ac9a3ff2_jpg",
+                        "location": "https://maps.app.goo.gl/c1JERKBjxB7BF3eW8"
                     },
                     {
                         "question": "கோயம்புத்தூர்",

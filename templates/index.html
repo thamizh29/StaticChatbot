@@ -31,13 +31,8 @@
         <span class="chat-button-content">கேள்வி</span>
     </button>
     <div class="chat-questions" id="chatQuestions" style="display: none;" >
-        {% if all_questions %}
         <ul>
-            {% for question in all_questions %}
-            <li onclick="handleQuestionClick('{{question['question']}}')">{{ loop.index }}. {{question['question']}}</li>
-            {% endfor %}
         </ul>
-        {% endif %}
     </div>
     <div class="chatoutput-container">
         <ul id="chatOutput">

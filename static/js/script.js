@@ -1,14 +1,3 @@
-
-// Get menu button and container elements
-const menuBtn = document.getElementById("menuBTN");
-const menuContiner = document.getElementById('active');
-
-menuBtn.addEventListener('click', () => {
-    menuBtn.classList.toggle('opened');
-    menuBtn.setAttribute('aria-expanded', menuBtn.classList.contains('opened'));
-    menuContiner.classList.toggle('visible');
-});
-
 let responses = {};
 let questionStack = []; // Stack to track question navigation
 
@@ -23,7 +12,7 @@ async function loadData() {
             responses[item.question] = {
                 answer: item.answer || "No answer available",
                 image: item.image || "",
-                subquestions: item.subquestion || []
+                subquestions: item.subquestion || [],
             };
         });
 
@@ -73,17 +62,6 @@ function toggleQuestions() {
     }
 }
 
-// Hide chatQuestions and expand chatOutputContainer when interacting with chatOutput
-// chatOutput.addEventListener("scroll", () => {
-//     chatQuestions.style.display = "none";
-//     chatButton.style.display = "block";
-
-//     // Expand chat output for mobile view
-//     if (window.innerWidth <= 480) {
-//         chatOutputContainer.style.height = "90vh";
-//     }
-// });
-
 chatOutput.addEventListener("touchstart", () => {
     chatQuestions.style.display = "none";
     chatButton.style.display = "block";
@@ -109,19 +87,7 @@ function renderQuestions(data) {
     questionsContainer.scrollTop = 0;
 }
 
-function renderSubquestions(parentQuestion, subquestions) {
-    const questionsContainer = document.querySelector('.chat-questions ul');
-    questionsContainer.innerHTML = ''; // Clear existing questions
 
-    subquestions.forEach((item, index) => {
-        const li = document.createElement('li');
-        li.textContent = `${index + 1}. ${item.question}`;
-        li.onclick = () => handleSubquestionClick(parentQuestion, item);
-        questionsContainer.appendChild(li);
-    });
-    // Scroll to the top of the container
-    questionsContainer.scrollTop = 0;
-}
 
 function handleQuestionClick(question, parentData) {
     const botResponse = responses[question];
@@ -146,64 +112,92 @@ function handleQuestionClick(question, parentData) {
 }
 
 function handleSubquestionClick(parentQuestion, subquestion) {
-    addMessage(subquestion.question, 'user');
+    addMessage(subquestion.question, 'user');  // Add subquestion to the chat
+
     setTimeout(() => {
-        // Ensure the image is correctly handled
-        const imageUrl = subquestion.image ? subquestion.image : "";
+        const imageUrl = subquestion.image || "";  // Use the image URL if available
 
-        addMessage(subquestion.answer, 'bot', imageUrl);
+        // Add the subquestion's answer and image
+        addMessage(subquestion.answer || " ", 'bot', imageUrl);
 
-        // Automatically go back to the parent question list after displaying the answer
-        const parentData = questionStack.pop(); // Get the parent questions from the stack
-        if (parentData) {
-            renderQuestions(parentData);
+        // If the subquestion has its own subquestions, recursively handle them
+        if (subquestion.subquestion && subquestion.subquestion.length > 0) {
+            questionStack.push(responses[parentQuestion].subquestions); // Save the current subquestions
+            renderSubquestions(subquestion.question, subquestion.subquestion); // Render nested subquestions
+        } else {
+            // If no more subquestions, go back to the parent question
+            const parentData = questionStack.pop(); // Get the parent data
+            if (parentData) {
+                renderQuestions(parentData);  // Re-render parent questions
+            } else {
+                // Ensure that you return to a proper state if no parent data exists
+                renderQuestions(parentData || []);
+            }
         }
     }, 500);
 }
 
+// Function to render subquestions and display images correctly
+function renderSubquestions(parentQuestion, subquestions) {
+    const questionsContainer = document.querySelector('.chat-questions ul');
+    questionsContainer.innerHTML = ''; // Clear existing questions
 
+    subquestions.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${index + 1}. ${item.question}`;
+        li.onclick = () => handleSubquestionClick(parentQuestion, item); // Handle click for nested subquestions
+        questionsContainer.appendChild(li);
+    });
+
+    // Scroll to the top of the container to show the new questions
+    questionsContainer.scrollTop = 0;
+}
+
+// Modified function to handle messages with images correctly
 function addMessage(text, type, image = "") {
+    if (!text.trim() && type === 'bot') {
+        return; // Don't add a message if no text is available
+    }
+
     const chatOutput = document.getElementById('chatOutput');
 
     // Create a new message container
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', type); // Assign type-specific class (e.g., 'user' or 'bot')
-    
-    
 
     // Format the text content (replace newlines with <br> for rendering)
     const formattedText = text.replace(/\r?\n/g, '<br>');
-
-    // Create a span to hold the text
     const textSpan = document.createElement('span');
-    textSpan.innerHTML = formattedText; // Use innerHTML to support <br> tags
+    textSpan.innerHTML = formattedText;
     messageDiv.appendChild(textSpan);
 
-    // If an image URL is provided, include the image in the message
+    // Handle image if provided
     if (image) {
         const img = document.createElement('img');
-        img.src = image;
+        img.src = image;  // Set the image source
         img.alt = "Response Image";
         img.style.maxWidth = "100%";
         img.style.borderRadius = "8px";
 
-        // Handle case where the image might not load
         img.onerror = () => {
             console.warn(`Image not found: ${image}`);
             img.remove(); // Remove the image if it can't load
         };
 
-        messageDiv.appendChild(img);
+        messageDiv.appendChild(img); // Add image to the message
     }
 
-    // Add the new message to the chat output container
-    const li = document.createElement('li');
-    li.appendChild(messageDiv);
-    chatOutput.appendChild(li);
+    // Add the message to the chat output
+    if (text.trim()) {
+        const li = document.createElement('li');
+        li.appendChild(messageDiv);
+        chatOutput.appendChild(li);
 
-    // Scroll to the bottom of the chat to show the latest message
-    chatOutput.scrollTop = chatOutput.scrollHeight; // Scrolls to the bottom immediately after appending
+        // Scroll to the bottom to display the latest message
+        chatOutput.scrollTop = chatOutput.scrollHeight;
+    }
 }
+
 
 // Initialize data loading
 loadData();

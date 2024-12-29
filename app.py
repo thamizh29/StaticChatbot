@@ -12,7 +12,7 @@ def load_data():
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('index.html', all_questions=load_data())
+    return render_template('index.html')
 
 @app.route("/Datajson")
 def datajson():

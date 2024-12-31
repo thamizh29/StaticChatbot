@@ -1,11 +1,12 @@
 let responses = {};
 let questionStack = []; // Stack to track question navigation
 let data = [];
+let searchBar ;
 // Load data from Data.json
 async function loadData() {
     try {
         // const response = await fetch('https://chat.vglug.org/Datajson');
-        const response = await fetch('http://127.0.0.1:8000/Datajson'); // Update the path if necessary
+        const response = await fetch('http://192.168.1.13:8000/Datajson'); // Update the path if necessary
         data = await response.json();
 
         // Populate the responses object including subquestions
@@ -111,7 +112,7 @@ function handleQuestionClick(question, parentData) {
         renderSubquestions(question, botResponse.subquestions);
     } else if (botResponse) {
         // Add the bot's answer as a message after a delay
-        console.log("ENters here with answer", botResponse.answer)
+        console.log("Enters here with answer", botResponse.answer)
         setTimeout(() => addMessage(botResponse.answer, 'bot', botResponse.image, botResponse.location, botResponse.live_url), 500);
         renderQuestions(data)
     } else {
@@ -120,6 +121,7 @@ function handleQuestionClick(question, parentData) {
         renderQuestions(data)
     }
 }
+
 
 function handleSubquestionClick(parentQuestion, subquestion) {
     addMessage(subquestion.question, 'user');  // Add subquestion to the chat
@@ -139,8 +141,10 @@ function handleSubquestionClick(parentQuestion, subquestion) {
             // If no more subquestions, go back to the parent question
             const parentData = data; // Get the parent data
             console.log("PARENT DATA", parentData)
+            searchBar.classList.add('hidden');
             if (parentData) {
                 renderQuestions(parentData);  // Re-render parent questions
+
             } else {
                 // Ensure that you return to a proper state if no parent data exists
                 renderQuestions(parentData || []);
@@ -149,23 +153,63 @@ function handleSubquestionClick(parentQuestion, subquestion) {
     }, 500);
 }
 
-// Function to render subquestions and display images correctly
+   
 function renderSubquestions(parentQuestion, subquestions) {
-    const questionsContainer = document.querySelector('.chat-questions ul');
+    const container = document.querySelector('.chat-questions');
+    container.innerHTML = ''; // Clear existing content
+
+    // Create the search bar
+    searchBar = document.createElement('input');
+    searchBar.type = 'text';
+    searchBar.placeholder = 'தேடுதல்...';
+    searchBar.className = 'search-bar';
+    searchBar.autofocus = true;
+
+    // Styling for the sticky search bar
+    searchBar.style.position = "sticky";
+    searchBar.style.top = "0"; // Stick to the top of the container
+    searchBar.style.zIndex = "1000"; // Ensure it stays above other elements
+    searchBar.style.height = "30px";
+    searchBar.style.width = "100%";
+    searchBar.style.paddingLeft = "10px";
+    searchBar.style.backgroundColor = "white"; // Optional: Match background color
+    searchBar.style.borderBottom = "1px solid #ccc"; // Optional: Separator styling
+
+    searchBar.classList.remove('hidden');
+    // Create the questions list container
+    const questionsList = document.createElement('ul');
+    questionsList.className = 'questions-list';
+
+    // Attach search bar and list to the container
+    container.appendChild(searchBar);
+    container.appendChild(questionsList);
+
+    // Render the initial list of questions
+    renderList(subquestions, parentQuestion, questionsList);
+
+    // Add event listener for search
+    searchBar.addEventListener('input', () => {
+        const searchTerm = searchBar.value.toLowerCase();
+        const filteredQuestions = subquestions.filter(item =>
+            item.question.toLowerCase().includes(searchTerm)
+        );
+        renderList(filteredQuestions, parentQuestion, questionsList);
+    });
+
+    // Ensure the list starts at the top
+    container.scrollTop = 0;
+}
+
+function renderList(subquestions, parentQuestion, questionsContainer) {
     questionsContainer.innerHTML = ''; // Clear existing questions
-    console.log("RENDERING --- SUB QUESTIONS", parentQuestion, subquestions)
     subquestions.forEach((item, index) => {
         const li = document.createElement('li');
         li.textContent = `${index + 1}. ${item.question}`;
         li.onclick = () => handleSubquestionClick(parentQuestion, item); // Handle click for nested subquestions
         questionsContainer.appendChild(li);
     });
-
-    // Scroll to the top of the container to show the new questions
-    questionsContainer.scrollButto =0;
-    chatQuestions.scrollTop = 0;
-    
 }
+
 
 // Modified function to handle messages with images correctly
 function addMessage(text, type, image = "", location = "", live_url = "") {

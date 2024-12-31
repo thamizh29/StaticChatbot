@@ -4,8 +4,8 @@ let data = [];
 // Load data from Data.json
 async function loadData() {
     try {
-        const response = await fetch('https://chat.vglug.org/Datajson');
-        //const response = await fetch('http://127.0.0.1:8000/Datajson'); // Update the path if necessary
+        // const response = await fetch('https://chat.vglug.org/Datajson');
+        const response = await fetch('http://127.0.0.1:8000/Datajson'); // Update the path if necessary
         data = await response.json();
 
         // Populate the responses object including subquestions
@@ -95,7 +95,8 @@ function renderQuestions(data) {
 
 function handleQuestionClick(question, parentData) {
     const botResponse = responses[question];
-
+    // Clear the chatOutput before showing a new answer
+    clearBotResponses();
     // Add the user's question as a message
     addMessage(question, 'user');
 
@@ -161,7 +162,9 @@ function renderSubquestions(parentQuestion, subquestions) {
     });
 
     // Scroll to the top of the container to show the new questions
-    questionsContainer.scrollTop = 0;
+    questionsContainer.scrollButto =0;
+    chatQuestions.scrollTop = 0;
+    
 }
 
 // Modified function to handle messages with images correctly
@@ -232,6 +235,21 @@ function addMessage(text, type, image = "", location = "", live_url = "") {
         chatOutput.scrollTop = chatOutput.scrollHeight;
     }
 }
+// Clear Previous Bot Responses
+function clearBotResponses() {
+    const chatOutput = document.getElementById('chatOutput');
+    chatOutput.innerHTML = ''; // Clear only bot messages
+}
+
+// backbutton adding 
+backbtn = document.querySelector('.refresh')
+backbtn.addEventListener("click",()=>{
+    renderQuestions(data)
+    clearBotResponses()  // clear output chats
+    chatQuestions.style.display = "none";
+    chatButton.style.display = "block"; 
+    mainImage.style.display = "block";
+})
 
 
 // Initialize data loading

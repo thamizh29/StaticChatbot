@@ -6,19 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Communist ChatBot</title>
     <link rel="icon" href="{{ url_for ('static',filename='images/Untitled-removebg-preview.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
-    <style>
-        .typing-indicator {
-            font-style: italic;
-            color: #888;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
     <div class="nav-bor">
         <img src="{{url_for('static',filename='images/Untitled-removebg-preview.png')}}" alt="log">
         <h1><span class="number">24</span>வது தமிழ் மாநில மாநாடு <br><span>( மாநாடு குறித்த விவரங்கள் )</span></h1>
+        <span class="refresh" ><i class="fa">&#xf015;</i></span>
     </div>
     <div class="main-img">
     <img src="{{url_for('static',filename='images/Untitled-removebg-preview.png')}}" alt="log" />
@@ -31,19 +27,9 @@
         <ul>
         </ul>
     </div>
-    <!-- <div class="video-container">
-        <iframe 
-            src="https://www.youtube-nocookie.com/embed/2y1TPkS-aEA" 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-    </div> -->
     <div class="chatoutput-container">
         <ul id="chatOutput">
         </ul>
-        <div class="empty"></div>
     </div>
     <script src="{{url_for('static',filename='js/script.js')}}"></script>
 </body>
